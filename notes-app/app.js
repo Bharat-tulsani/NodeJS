@@ -1,5 +1,6 @@
 const chalk=require('chalk')
 const yargs=require('yargs')
+const notes=require('./notes.js')
 
 // const fs=require('fs')
 // fs.writeFileSync('notes.txt','This file was created by Node.js!')
@@ -31,10 +32,23 @@ yargs.command({
 })
 // Define the 'add' command with different cases
 yargs.command({
-    command: ['add', 'Add', 'ADD'],
+    command: 'add',
     describe: 'Add a new note',
-    handler: function () {
-        console.log('Adding a new note!');
+    builder: {
+        title: {
+            describe: 'Note title',
+            demandOption: true,
+            type: 'string'
+        } ,
+        body:{
+            command:'body',
+            describe:'Note body',
+            demandOption:true,
+            type:'string'
+        }
+    },
+    handler: function (argv) {
+       notes.addNote(argv.title,argv.body) 
     }
 });
 
@@ -55,4 +69,5 @@ yargs.command({
         console.log('Reading a note!');
     }
 });
-console.log(yargs.argv)
+yargs.parse()
+// console.log(yargs.argv)
